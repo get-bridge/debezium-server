@@ -36,9 +36,9 @@ RUN tar xzf /tmp/debezium.tar.gz -C $SERVER_HOME --strip-components 1 &&\
     rm -f /tmp/debezium.tar.gz
 
 #
-# Add jmxterm for liveness probes
+# Add jolokia for healthchecks over jmx
 #
-ADD --chown=jboss:jboss https://github.com/jiaqi/jmxterm/releases/download/v1.0.3/jmxterm-1.0.3-uber.jar $SERVER_HOME/jmxterm-uber.jar
+ADD --chown=jboss:jboss https://repo1.maven.org/maven2/org/jolokia/jolokia-jvm/1.7.2/jolokia-jvm-1.7.2.jar $SERVER_HOME/jolokia.jar
 
 COPY --chown=jboss:jboss bridge-run.sh $SERVER_HOME
 
