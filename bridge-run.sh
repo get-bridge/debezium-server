@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -javaagent:jolokia.jar"
+export JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -javaagent:jolokia.jar -Xmx4G"
 
 if [[ -v PULSAR_SERVICE_ACCOUNT_JSON ]]; then
   echo "$PULSAR_SERVICE_ACCOUNT_JSON" > /tmp/pulsar_creds.json
