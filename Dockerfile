@@ -27,7 +27,7 @@ RUN mkdir $SERVER_HOME/conf && \
 #
 # Copy built artifact
 #
-COPY --chown=jboss:jboss debezium-server-dist/target/debezium-server-dist-2.2.0-SNAPSHOT.tar.gz $DEBEZIUM_ARCHIVE
+COPY --chown=jboss:jboss debezium-server-dist/target/debezium-server-dist-2.7.1.Final.tar.gz $DEBEZIUM_ARCHIVE
 
 #
 # Verify the contents and then install ...
