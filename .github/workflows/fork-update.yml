@@ -1,0 +1,53 @@
+name: Auto Update Debezium Fork
+
+on:
+  # schedule:
+  #   - cron: '0 0 * * 0'
+  push:
+    branches: 
+    - "PLT-831"
+  workflow_dispatch:
+
+jobs:
+  update-fork:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout upstream
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "Auto Update Bot"
+          git config user.email "bot@getbridge.com"
+      
+      - name: Get Latest Stable Tag
+        id: get_tag
+        run: |
+          git remote add upstream https://github.com/debezium/debezium-server.git
+          git fetch --tags upstream --prune
+
+          LATEST_TAG=$(git tag --sort=-v:refname --list 'upstream/v*.Final' | head -n 1 | sed 's^upstream/^^')
+
+          if [[ -z "$LATEST_TAG" ]]; then
+            echo "No stable tags found in upstream matching the pattern 'v*.Final'."
+            exit 0
+          fi
+          echo "latest_tag=$LATEST_TAG" >> "$GITHUB_OUTPUT"
+
+      # - name: Add fork remote
+      #   run: |
+      #     git remote add fork https://github.com/debezium/debezium-server.git
+      #     git fetch fork
+
+      # - name: Rebase with upstream
+      #   run: |
+      #     git rebase fork/main
+
+      # - name: Push changes
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GIT_HUB_TOKEN }}
+      #   run: |
+      #     git push origin HEAD:main
