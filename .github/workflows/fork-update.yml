@@ -29,9 +29,9 @@ jobs:
           git remote add upstream https://github.com/debezium/debezium-server.git
           git fetch --tags upstream --prune
 
-          UPSTREAM_FINAL_TAGS=$(git tag --list 'upstream/*' | grep 'upstream/v.*\.Final$')
+          UPSTREAM_FINAL_TAGS=$(git tag --list 'v*.*.*.Final')
           if [[ -z "$UPSTREAM_FINAL_TAGS" ]]; then
-            echo "No stable tags found in upstream matching the pattern 'v*.Final'."
+            echo "No stable tags found in upstream matching the pattern 'v*.*.*.Final'."
             exit 0
           fi
 
