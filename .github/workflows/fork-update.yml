@@ -32,13 +32,22 @@ jobs:
     #     # Set test_mode true to run tests instead of the true action!!
     #     test_mode: false
 
-    - run: gh auth refresh -s workflow
+    # - run: gh repo sync $REPOSITORY -b $BRANCH_NAME
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     REPOSITORY: get-bridge/debezium-server
+    #     BRANCH_NAME: PLT-831-1
 
-    - run: gh repo sync $REPOSITORY -b $BRANCH_NAME
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        REPOSITORY: get-bridge/debezium-server
-        BRANCH_NAME: PLT-831-1
+    - name: sync
+      uses: TobKed/github-forks-sync-action@master
+        with:
+          github_token: ${{ secrets.DEBEZIUM_WORKFLOW_TOKEN }}
+          upstream_repository: debezium/debezium-server
+          target_repository: get-bridge/debezium-server
+          upstream_branch: master
+          target_branch: PLT-831-1
+          force: true
+          tags: true
 
     - name: Timestamp
       run: date
