@@ -1,8 +1,8 @@
 name: Auto Update Debezium Fork
 
 on:
-  # schedule:
-  #   - cron: '0 0 * * 0'
+  schedule:
+    - cron: '0 0 * * 0'
   push:
     branches: 
     - "PLT-831"
@@ -12,44 +12,22 @@ jobs:
   update-fork:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout upstream
-        uses: actions/checkout@v3
-        with:
-          ref: main
-          fetch-depth: 0
+    - name: Checkout main
+      uses: actions/checkout@v2
+      with:
+        ref: main
+        
+    - name: Pull upstream changes
+      id: sync
+      uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
+      with:
+        target_sync_branch: main
+        # REQUIRED 'target_repo_token' exactly like this!
+        target_repo_token: ${{ secrets.GIT_HUB_TOKEN }}
+        upstream_sync_branch: main
+        upstream_sync_repo: debezium/debezium-server
+        # Set test_mode true to run tests instead of the true action!!
+        test_mode: true
 
-      - name: Configure Git
-        run: |
-          git config user.name "Auto Update Bot"
-          git config user.email "bot@getbridge.com"
-      
-      - name: Get Latest Stable Tag
-        id: get_tag
-        run: |
-          git remote add upstream https://github.com/debezium/debezium-server.git
-          git fetch --tags upstream --prune
-
-          UPSTREAM_FINAL_TAGS=$(git tag --list 'v*.*.*.Final')
-          if [[ -z "$UPSTREAM_FINAL_TAGS" ]]; then
-            echo "No stable tags found in upstream matching the pattern 'v*.*.*.Final'."
-            exit 0
-          fi
-
-          LATEST_TAG=$(echo "$UPSTREAM_FINAL_TAGS" | sort -Vr | head -n 1 | sed 's^upstream/^^')
-
-          echo "latest_tag=$LATEST_TAG" >> "$GITHUB_OUTPUT"
-      
-      # - name: Add fork remote
-      #   run: |
-      #     git remote add fork https://github.com/debezium/debezium-server.git
-      #     git fetch fork
-
-      # - name: Rebase with upstream
-      #   run: |
-      #     git rebase fork/main
-
-      # - name: Push changes
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GIT_HUB_TOKEN }}
-      #   run: |
-      #     git push origin HEAD:main
+    - name: Timestamp
+      run: date
