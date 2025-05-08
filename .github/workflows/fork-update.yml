@@ -19,7 +19,6 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         
     - name: Pull upstream changes
-        GITHUB_TOKEN: ${{ github.token }}
       id: sync
       uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
       with:
