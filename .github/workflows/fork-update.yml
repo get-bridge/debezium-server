@@ -27,7 +27,7 @@ jobs:
         upstream_sync_branch: main
         upstream_sync_repo: debezium/debezium-server
         # Set test_mode true to run tests instead of the true action!!
-        test_mode: true
+        test_mode: false
 
     - name: Timestamp
       run: date
