@@ -12,10 +12,10 @@ jobs:
   update-fork:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout main
+    - name: Checkout PLT-831-1
       uses: actions/checkout@v2
       with:
-        ref: main
+        ref: PLT-831-1
         
     - name: Pull upstream changes
       id: sync
