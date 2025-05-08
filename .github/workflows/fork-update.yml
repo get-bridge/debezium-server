@@ -44,7 +44,7 @@ jobs:
         github_token: ${{ secrets.DEBEZIUM_WORKFLOW_TOKEN }}
         upstream_repository: debezium/debezium-server
         target_repository: get-bridge/debezium-server
-        upstream_branch: master
+        upstream_branch: main
         target_branch: PLT-831-1
         force: true
         tags: true
