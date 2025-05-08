@@ -32,6 +32,8 @@ jobs:
     #     # Set test_mode true to run tests instead of the true action!!
     #     test_mode: false
 
+    - run: gh auth refresh -s workflow
+
     - run: gh repo sync $REPOSITORY -b $BRANCH_NAME
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
