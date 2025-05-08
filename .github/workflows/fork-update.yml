@@ -20,17 +20,23 @@ jobs:
         ref: PLT-831-1
         token: ${{ secrets.GITHUB_TOKEN }}
         
-    - name: Pull upstream changes
-      id: sync
-      uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
-      with:
-        target_sync_branch: PLT-831-1
-        # REQUIRED 'target_repo_token' exactly like this!
-        target_repo_token: ${{ secrets.GITHUB_TOKEN }}
-        upstream_sync_branch: main
-        upstream_sync_repo: debezium/debezium-server
-        # Set test_mode true to run tests instead of the true action!!
-        test_mode: false
+    # - name: Pull upstream changes
+    #   id: sync
+    #   uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
+    #   with:
+    #     target_sync_branch: PLT-831-1
+    #     # REQUIRED 'target_repo_token' exactly like this!
+    #     target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+    #     upstream_sync_branch: main
+    #     upstream_sync_repo: debezium/debezium-server
+    #     # Set test_mode true to run tests instead of the true action!!
+    #     test_mode: false
+
+    - run: gh repo sync $REPOSITORY -b $BRANCH_NAME
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REPOSITORY: get-bridge/debezium-server
+        BRANCH_NAME: PLT-831-1
 
     - name: Timestamp
       run: date
