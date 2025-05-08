@@ -23,7 +23,7 @@ jobs:
       with:
         target_sync_branch: PLT-831-1
         # REQUIRED 'target_repo_token' exactly like this!
-        target_repo_token: ${{ secrets.DEBEZIUM_WORKFLOW_TOKEN }}
+        target_repo_token: ${{ secrets.GITHUB_TOKEN }}
         upstream_sync_branch: main
         upstream_sync_repo: debezium/debezium-server
         # Set test_mode true to run tests instead of the true action!!
