@@ -3,10 +3,6 @@ name: Auto Update Debezium Fork
 on:
   schedule:
     - cron: '0 0 * * 0'
-  push:
-    branches: 
-    - "PLT-831"
-  workflow_dispatch:
 
 jobs:
   update-fork:
@@ -14,29 +10,11 @@ jobs:
     permissions:
       contents: write
     steps:
-    - name: Checkout PLT-831-1
+    - name: Checkout main
       uses: actions/checkout@v2
       with:
-        ref: PLT-831-1
+        ref: main
         token: ${{ secrets.GITHUB_TOKEN }}
-        
-    # - name: Pull upstream changes
-    #   id: sync
-    #   uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
-    #   with:
-    #     target_sync_branch: PLT-831-1
-    #     # REQUIRED 'target_repo_token' exactly like this!
-    #     target_repo_token: ${{ secrets.GITHUB_TOKEN }}
-    #     upstream_sync_branch: main
-    #     upstream_sync_repo: debezium/debezium-server
-    #     # Set test_mode true to run tests instead of the true action!!
-    #     test_mode: false
-
-    # - run: gh repo sync $REPOSITORY -b $BRANCH_NAME
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #     REPOSITORY: get-bridge/debezium-server
-    #     BRANCH_NAME: PLT-831-1
 
     - name: sync
       uses: TobKed/github-forks-sync-action@master
@@ -45,7 +23,7 @@ jobs:
         upstream_repository: debezium/debezium-server
         target_repository: get-bridge/debezium-server
         upstream_branch: main
-        target_branch: PLT-831-1
+        target_branch: main
         force: true
         tags: true
 
