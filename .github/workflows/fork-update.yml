@@ -1,10 +1,11 @@
 name: Auto Update Debezium Fork
 
-on:
-  # schedule:
-  #   - cron: '0 0 1 * *'
-  push:
-    - main
+# on:
+#   # schedule:
+#   #   - cron: '0 0 1 * *'
+#   push:
+#     branches:
+#     - main
 
 jobs:
   update-fork:
