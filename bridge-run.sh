@@ -8,6 +8,14 @@ else
   echo "Pulsar service account environment variable (PULSAR_SERVICE_ACCOUNT_JSON) was not found."
 fi
 
-exec java -javaagent:/otel-javaagent.jar -jar /app.jar $@
+DEBEZIUM_JAR=$(find /debezium -name "debezium-server-*.jar" | head -1)
+
+if [ -z "$DEBEZIUM_JAR" ]; then
+    echo "Error: Debezium Server JAR not found"
+    exit 1
+fi
+
+echo "Starting Debezium Server with OpenTelemetry tracing..."
+exec java -javaagent:/debezium/otel-javaagent.jar -jar "$DEBEZIUM_JAR" "$@"
 
 /debezium/run.sh

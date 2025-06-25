@@ -23,6 +23,10 @@ RUN microdnf -y install gzip && \
 #
 RUN chown -R jboss $SERVER_HOME && \
     chgrp -R jboss $SERVER_HOME
+
+RUN curl --progress-bar --location --output /tmp/otel-javaagent.jar \
+  https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.9.0/opentelemetry-javaagent.jar
+
 USER jboss
 
 RUN mkdir $SERVER_HOME/conf && \
@@ -33,6 +37,7 @@ ARG DEBEZIUM_SERVER_DIST_FILENAME
 # Copy built artifact
 #
 COPY --chown=jboss:jboss debezium-server-dist/target/${DEBEZIUM_SERVER_DIST_FILENAME} $DEBEZIUM_ARCHIVE
+COPY --from=downloader --chown=jboss:jboss /tmp/otel-javaagent.jar /debezium/otel-javaagent.jar
 
 #
 # Verify the contents and then install ...
