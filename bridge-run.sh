@@ -16,6 +16,6 @@ if [ -z "$DEBEZIUM_JAR" ]; then
 fi
 
 echo "Starting Debezium Server with OpenTelemetry tracing..."
-exec java -javaagent:/debezium/otel-javaagent.jar -jar "$DEBEZIUM_JAR" "$@"
+# exec java -javaagent:/debezium/otel-javaagent.jar -jar "$DEBEZIUM_JAR" "$@"
 
 /debezium/run.sh
