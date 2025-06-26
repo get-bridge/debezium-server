@@ -2,7 +2,7 @@ FROM curlimages/curl:latest AS downloader
 RUN curl --progress-bar --location --output /tmp/otel-javaagent.jar \
   https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.9.0/opentelemetry-javaagent.jar
 
-FROM registry.access.redhat.com/ubi8/openjdk-21 AS builder
+FROM registry.access.redhat.com/ubi8/openjdk-11 AS builder
 
 LABEL maintainer="Debezium Community"
 
