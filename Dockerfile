@@ -56,6 +56,7 @@ COPY --chown=jboss:jboss bridge-run.sh $SERVER_HOME
 # Allow random UID to use Debezium Server
 #
 RUN chmod -R g+w,o+w $SERVER_HOME
+RUN chmod +x $SERVER_HOME/bridge-run.sh
 
 # Set the working directory to the Debezium Server home directory
 WORKDIR $SERVER_HOME
