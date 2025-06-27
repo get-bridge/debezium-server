@@ -1,7 +1,12 @@
+#
+# Tracing agent prep
+#
 FROM curlimages/curl:latest AS downloader
-FROM registry.access.redhat.com/ubi8/openjdk-21 AS builder
 RUN curl --progress-bar --location --output /tmp/otel-javaagent.jar \
   https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.9.0/opentelemetry-javaagent.jar
+
+FROM registry.access.redhat.com/ubi8/openjdk-21 AS builder
+
 LABEL maintainer="Debezium Community"
 
 ENV SERVER_HOME=/debezium \
@@ -22,8 +27,6 @@ RUN microdnf -y install gzip && \
 RUN chown -R jboss $SERVER_HOME && \
     chgrp -R jboss $SERVER_HOME
 
-RUN curl --progress-bar --location --output /tmp/otel-javaagent.jar \
-  https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.9.0/opentelemetry-javaagent.jar
 
 USER jboss
 
