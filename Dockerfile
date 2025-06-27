@@ -37,8 +37,9 @@ ARG DEBEZIUM_SERVER_DIST_FILENAME
 #
 # Copy built artifact
 #
-COPY --chown=jboss:jboss debezium-server-dist/target/${DEBEZIUM_SERVER_DIST_FILENAME} $DEBEZIUM_ARCHIVE
+# COPY --chown=jboss:jboss debezium-server-dist/target/${DEBEZIUM_SERVER_DIST_FILENAME} $DEBEZIUM_ARCHIVE
 COPY --from=downloader --chown=jboss:jboss /tmp/otel-javaagent.jar /debezium/otel-javaagent.jar
+COPY --from=builder --chown=jboss:jboss $SERVER_HOME $SERVER_HOME
 
 #
 # Verify the contents and then install ...
