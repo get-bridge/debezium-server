@@ -38,21 +38,6 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Maven build core
-        run: |
-          ./server/mvnw clean install -B -ntp -f core/pom.xml \
-          -DskipTests=true \
-          -DskipITs=true \
-          -Dformat.formatter.goal=validate \
-          -Dformat.imports.goal=check \
-          -Dhttp.keepAlive=false \
-          -Dmaven.wagon.http.pool=false \
-          -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
-          -Dcheckstyle.skip=true \
-          -Dformat.skip=true \
-          -Drevapi.skip \
-          -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-
       - name: Maven build Debezium Server
         id: build_server
         run: |
@@ -72,13 +57,31 @@ jobs:
           ARTIFACT_PATH=$(find server/debezium-server-dist/target/ -maxdepth 1 -name "debezium-server-dist-*.tar.gz" | head -n 1)
 
           if [ -f "$ARTIFACT_PATH" ]; then
-              ARTIFACT_FILENAME=$(basename "$ARTIFACT_PATH")
-              echo "Discovered artifact: $ARTIFACT_FILENAME"
-              echo "artifact_filename=$ARTIFACT_FILENAME" >> $GITHUB_OUTPUT
+            ARTIFACT_FILENAME=$(basename "$ARTIFACT_PATH")
+            echo "Discovered artifact: $ARTIFACT_FILENAME"
+            echo "artifact_filename=$ARTIFACT_FILENAME" >> $GITHUB_OUTPUT
+        
+           # Debug: Show what's inside the tar.gz
+            echo "Contents of the distribution archive:"
+            tar -tzf "$ARTIFACT_PATH" | head -20
+            # Verify the structure contains what we expect
+            if tar -tzf "$ARTIFACT_PATH" | grep -q "lib/"; then
+              echo "✓ Archive contains lib/ directory"
+            else
+              echo "Warning: Archive does not contain lib/ directory"
+            fi
+        
+            if tar -tzf "$ARTIFACT_PATH" | grep -q ".*-runner\.jar"; then
+              echo "Archive contains runner JAR"
+            else
+              echo "Warning: Archive does not contain runner JAR"
+            fi
           else
-              echo "Error: Could not find artifact 'debezium-server-dist-*.tar.gz' in server/debezium-server-dist/target/"
-              exit 1
-          fi
+            echo "Error: Could not find artifact 'debezium-server-dist-*.tar.gz' in server/debezium-server-dist/target/"
+            echo "Available files in target directory:"
+            ls -la server/debezium-server-dist/target/
+            exit 1
+          fi 
       
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
