@@ -28,6 +28,18 @@
         <version.debezium>${project.version}</version.debezium>
     </properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+                <configuration>
+                    <packageType>fast-jar</packageType> <!-- or uber-jar -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <repositories>
         <repository>
             <id>oss</id>
