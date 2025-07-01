@@ -34,7 +34,7 @@
                 <groupId>io.quarkus</groupId>
                 <artifactId>quarkus-maven-plugin</artifactId>
                 <configuration>
-                    <packageType>fast-jar</packageType> <!-- or uber-jar -->
+                    <packageType>fast-jar</packageType> 
                 </configuration>
             </plugin>
         </plugins>

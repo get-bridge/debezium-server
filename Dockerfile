@@ -85,3 +85,5 @@ WORKDIR $SERVER_HOME
 EXPOSE 8080
 VOLUME ["/debezium/conf","/debezium/data"]
 CMD ["/debezium/bridge-run.sh"]
+
+asdasd

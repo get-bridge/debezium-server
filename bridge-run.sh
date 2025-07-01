@@ -23,27 +23,6 @@ fi
 
 echo "Found Debezium JAR: $DEBEZIUM_JAR"
 
-# Check what type of JAR we have
-echo "Checking JAR type and structure..."
-if [ -d "/debezium/lib" ]; then
-    echo "Found lib/ directory - this is a Quarkus fast-jar"
-    echo "Lib directory contents (first 10 files):"
-    ls -la /debezium/lib/ | head -10
-else
-    echo "No lib/ directory found - checking if this is an uber-jar..."
-    # Check if the main class is inside the JAR (uber-jar format)
-    if jar -tf "$DEBEZIUM_JAR" | grep -q "io/debezium/server/Main.class"; then
-        echo "✓ This appears to be an uber-jar (self-contained)"
-    else
-        echo "✗ Cannot find main class in JAR - this may be a packaging issue"
-        echo "Available directories:"
-        ls -la /debezium/
-        echo "JAR contents (first 20 entries):"
-        jar -tf "$DEBEZIUM_JAR" | head -20
-        exit 1
-    fi
-fi
-
 echo "Starting Debezium Server with OpenTelemetry tracing..."
 echo "Working directory: $(pwd)"
 echo "JAR file: $DEBEZIUM_JAR"
