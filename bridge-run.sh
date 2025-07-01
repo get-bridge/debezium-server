@@ -61,3 +61,4 @@ else
         -Djava.rmi.server.hostname=${POD_IP} \
         -cp "$CLASSPATH" \
         io.debezium.server.Main "$@"
+fi
