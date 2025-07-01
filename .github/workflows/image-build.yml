@@ -72,13 +72,15 @@ jobs:
           ARTIFACT_PATH=$(find server/debezium-server-dist/target/ -maxdepth 1 -name "debezium-server-dist-*.tar.gz" | head -n 1)
 
           if [ -f "$ARTIFACT_PATH" ]; then
-              ARTIFACT_FILENAME=$(basename "$ARTIFACT_PATH")
-              echo "Discovered artifact: $ARTIFACT_FILENAME"
-              echo "artifact_filename=$ARTIFACT_FILENAME" >> $GITHUB_OUTPUT
+            ARTIFACT_FILENAME=$(basename "$ARTIFACT_PATH")
+            echo "Discovered artifact: $ARTIFACT_FILENAME"
+            echo "artifact_filename=$ARTIFACT_FILENAME" >> $GITHUB_OUTPUT
           else
-              echo "Error: Could not find artifact 'debezium-server-dist-*.tar.gz' in server/debezium-server-dist/target/"
-              exit 1
-          fi
+            echo "Error: Could not find artifact 'debezium-server-dist-*.tar.gz' in server/debezium-server-dist/target/"
+            echo "Available files in target directory:"
+            ls -la server/debezium-server-dist/target/
+            exit 1
+          fi 
       
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
