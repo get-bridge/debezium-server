@@ -32,6 +32,7 @@ QUARKUS_RUN_JAR="/debezium/quarkus-app/quarkus-run.jar"
 if [ -f "$QUARKUS_RUN_JAR" ]; then
     echo "Found proper Quarkus application structure, using quarkus-run.jar"
     exec java \
+        $DEBEZIUM_OPTS $JAVA_OPTS \
         -javaagent:/debezium/otel-javaagent.jar \
         -javaagent:/debezium/jolokia.jar \
         -Dcom.sun.management.jmxremote=true \
@@ -51,6 +52,7 @@ else
 
     echo "Running with classpath approach..."
     exec java \
+        $DEBEZIUM_OPTS $JAVA_OPTS \
         -javaagent:/debezium/otel-javaagent.jar \
         -javaagent:/debezium/jolokia.jar \
         -Dcom.sun.management.jmxremote=true \
