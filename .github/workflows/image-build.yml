@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: get-bridge/debezium
-          ref: main
+          ref: ${{ github.ref }}
           path: core
       - name: Checkout Debezium Server
         uses: actions/checkout@v4
