@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export JAVA_OPTS="-javaagent:jolokia.jar -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=9012 -Dcom.sun.management.jmxremote.rmi.port=9012 -Djava.rmi.server.hostname=$POD_IP"
+export JAVA_OPTS="-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=9012 -Dcom.sun.management.jmxremote.rmi.port=9012 -Djava.rmi.server.hostname=$POD_IP"
 
 if [[ -v PULSAR_SERVICE_ACCOUNT_JSON ]]; then
   echo "$PULSAR_SERVICE_ACCOUNT_JSON" > /tmp/pulsar_creds.json
@@ -23,7 +23,7 @@ fi
 
 echo "Found Debezium JAR: $DEBEZIUM_JAR"
 
-echo "Starting Debezium Server with OpenTelemetry tracing..."
+echo "Starting Debezium Server..."
 echo "Working directory: $(pwd)"
 echo "JAR file: $DEBEZIUM_JAR"
 
@@ -33,8 +33,6 @@ if [ -f "$QUARKUS_RUN_JAR" ]; then
     echo "Found proper Quarkus application structure, using quarkus-run.jar"
     exec java \
         $DEBEZIUM_OPTS $JAVA_OPTS \
-        -javaagent:/debezium/otel-javaagent.jar \
-        -javaagent:/debezium/jolokia.jar \
         -Dcom.sun.management.jmxremote=true \
         -Dcom.sun.management.jmxremote.authenticate=false \
         -Dcom.sun.management.jmxremote.ssl=false \
@@ -53,8 +51,6 @@ else
     echo "Running with classpath approach..."
     exec java \
         $DEBEZIUM_OPTS $JAVA_OPTS \
-        -javaagent:/debezium/otel-javaagent.jar \
-        -javaagent:/debezium/jolokia.jar \
         -Dcom.sun.management.jmxremote=true \
         -Dcom.sun.management.jmxremote.authenticate=false \
         -Dcom.sun.management.jmxremote.ssl=false \
